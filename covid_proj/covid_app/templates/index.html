@@ -1,11 +1,55 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spread of Covid-19</title>
+    {% load static %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">    
+    <script src="{% static 'js/script.js' %}"></script>
 </head>
 <body>
-    <h1>The Spread of Covid-19</h1>
+    <div class="container">
+        <h1>Spread of Covid-19</h1>
+        <div id="country">
+            <form action="/process" method="POST">    
+            {% csrf_token %}
+            State Name:<input type="text" name="state">
+            State Abbreviation: <input type="text" name="abbr">
+            Infection Rate: <input type="text" name="rate" value="1">
+
+            <input type="submit" value="Add">
+            </form>
+        </div>
+        
+        <div>
+            <h1>{{state.name}}</h1>
+            <h3 hidden id="abbr" >{{state.abbr}}</h3>        
+            <div class="info" id="data">
+            <!-- Populated by javascript -->
+            </div>
+        </div>
+
+        <div class="delete">
+            <form action="/delete" method="POST">
+                {% csrf_token %}
+                ID: <input type="text" name="id">
+                <input type="submit" value="Delete">
+            </form>
+        </div>
+        
+        <div class="list">
+            <h3>States:</h3>
+            <ul>
+            {% for state in states %}
+                <li>  <a href="/state/{{state.id}}">{{state.name}} </a> </li>
+            {% endfor %}
+            </ul>
+        </div>
+        
+
+    </div>
 </body>
 </html>
