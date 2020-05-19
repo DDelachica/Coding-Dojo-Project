@@ -8,7 +8,7 @@ def index(request):
         request.session['id'] = 1
     context = {
         'countries': Country.objects.all(),
-        'states': States.objects.all(),
+        'states': States.objects.all().order_by("name"),
         'state' : States.objects.get(id=request.session['id']),
     }
     return render(request, 'index.html', context)
